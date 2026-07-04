@@ -12,7 +12,7 @@ data=[]
 current_phase = 0
 next_switch = 0
 
-for step in range(300):
+for step in range(500):
 
     traci.simulationStep()
 

@@ -11,7 +11,7 @@ tls = traci.trafficlight.getIDList()[0]
 
 data=[]
 
-for step in range(300):
+for step in range(500):
 
     traci.simulationStep()
 
