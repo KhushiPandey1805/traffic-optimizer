@@ -1,7 +1,7 @@
 import traci
 import pandas as pd
 
-sumoCmd=["sumo-gui","-c","config.sumocfg"]
+sumoCmd=["sumo-gui","-c","../config.sumocfg"]
 
 traci.start(sumoCmd)
 
@@ -16,15 +16,13 @@ for step in range(500):
 
     traci.simulationStep()
 
-    ns = (
-        traci.edge.getLastStepHaltingNumber("n2c")
-        + traci.edge.getLastStepHaltingNumber("s2c")
-    )
+    north = traci.edge.getWaitingTime("n2c")
+    south = traci.edge.getWaitingTime("s2c")
+    east  = traci.edge.getWaitingTime("e2c")
+    west  = traci.edge.getWaitingTime("w2c")
 
-    ew = (
-        traci.edge.getLastStepHaltingNumber("e2c")
-        + traci.edge.getLastStepHaltingNumber("w2c")
-    )
+    ns = north + south
+    ew = east + west
 
     vehicles = traci.vehicle.getIDList()
 
@@ -39,31 +37,31 @@ for step in range(500):
 
     if step >= next_switch:
 
-        if ns > ew:
+        if ns >= ew:
 
-            traci.trafficlight.setPhase(tls,0)
+            traci.trafficlight.setPhase(tls, 0)
 
-            green_time = min(
-                15 + int(ns * 0.5),
-                30
+            green_time = max(
+                10,
+                min(15 + int(ns / 20), 35)
             )
 
         else:
 
-            traci.trafficlight.setPhase(tls,2)
+            traci.trafficlight.setPhase(tls, 2)
 
-            green_time = min(
-                15 + int(ew * 0.5),
-                30
+            green_time = max(
+                10,
+                min(15 + int(ew / 20), 35)
             )
 
         next_switch = step + green_time
 
         print(
-            f"Step {step}"
-            f" NS={ns}"
-            f" EW={ew}"
-            f" Green={green_time}"
+            f"Step {step} | "
+            f"NS Wait={ns:.1f} | "
+            f"EW Wait={ew:.1f} | "
+            f"Green={green_time}"
         )
 
 traci.close()

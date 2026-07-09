@@ -1,0 +1,7 @@
+<input>
+
+    <net-file value="network/network.net.xml"/>
+
+    <route-files value="routes/routes.rou.xml"/>
+
+</input>

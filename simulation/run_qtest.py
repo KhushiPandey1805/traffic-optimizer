@@ -6,33 +6,40 @@ Q = np.load("../results/qtable.npy")
 
 def get_state():
 
-    ns = (
-        traci.edge.getLastStepHaltingNumber("n2c")
-        +
-        traci.edge.getLastStepHaltingNumber("s2c")
+    north = min(
+        traci.edge.getLastStepHaltingNumber("n2c") // 2,
+        10
     )
 
-    ew = (
-        traci.edge.getLastStepHaltingNumber("e2c")
-        +
-        traci.edge.getLastStepHaltingNumber("w2c")
+    south = min(
+        traci.edge.getLastStepHaltingNumber("s2c") // 2,
+        10
     )
 
-    ns=min(ns//2,10)
-    ew=min(ew//2,10)
+    east = min(
+        traci.edge.getLastStepHaltingNumber("e2c") // 2,
+        10
+    )
 
-    return ns,ew
+    west = min(
+        traci.edge.getLastStepHaltingNumber("w2c") // 2,
+        10
+    )
+
+    return north, south, east, west
 
 
 traci.start([
     "sumo-gui",
     "-c",
-    "config.sumocfg"
+    "../config.sumocfg"
 ])
 
 tls=traci.trafficlight.getIDList()[0]
 
 current_phase=0
+min_green = 10
+last_switch = 0
 
 data=[]
 
@@ -45,28 +52,33 @@ for step in range(500):
     action=np.argmax(
         Q[
             state[0],
-            state[1]
+            state[1],
+            state[2],
+            state[3]
         ]
     )
 
-    if action==0 and current_phase!=0:
+    if step-last_switch>=min_green:
+        if action==0 and current_phase!=0:
 
-        traci.trafficlight.setPhase(
-            tls,
-            0
-        )
+            traci.trafficlight.setPhase(
+                tls,
+                0
+            )
 
-        current_phase=0
+            current_phase=0
+            last_switch=step
 
 
-    elif action==1 and current_phase!=2:
+        elif action==1 and current_phase!=2:
 
-        traci.trafficlight.setPhase(
-            tls,
-            2
-        )
+            traci.trafficlight.setPhase(
+                tls,
+                2
+            )
 
-        current_phase=2
+            current_phase=2
+            last_switch=step
 
 
     vehicles=traci.vehicle.getIDList()

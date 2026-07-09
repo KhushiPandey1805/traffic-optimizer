@@ -1,0 +1,510 @@
+<routes>
+
+    <vType
+        id="car"
+        accel="1.0"
+        decel="4.5"
+        sigma="0.5"
+        length="5"
+        maxSpeed="25"/>
+
+    <route id="northSouth" edges="n2c c2s"/>
+    <route id="southNorth" edges="s2c c2n"/>
+
+    <route id="eastWest" edges="e2c c2w"/>
+    <route id="westEast" edges="w2c c2e"/>
+
+    <route id="northEast" edges="n2c c2e"/>
+    <route id="northWest" edges="n2c c2w"/>
+
+    <route id="southEast" edges="s2c c2e"/>
+    <route id="southWest" edges="s2c c2w"/>
+
+    <route id="eastNorth" edges="e2c c2n"/>
+    <route id="eastSouth" edges="e2c c2s"/>
+
+    <route id="westNorth" edges="w2c c2n"/>
+    <route id="westSouth" edges="w2c c2s"/>
+
+
+    <flow
+        id="night_northSouth"
+        type="car"
+        route="northSouth"
+        begin="0"
+        end="100"
+        probability="0.1"/>
+
+    <flow
+        id="night_northEast"
+        type="car"
+        route="northEast"
+        begin="0"
+        end="100"
+        probability="0.03"/>
+
+    <flow
+        id="night_northWest"
+        type="car"
+        route="northWest"
+        begin="0"
+        end="100"
+        probability="0.02"/>
+
+    <flow
+        id="night_southNorth"
+        type="car"
+        route="southNorth"
+        begin="0"
+        end="100"
+        probability="0.08"/>
+
+    <flow
+        id="night_southEast"
+        type="car"
+        route="southEast"
+        begin="0"
+        end="100"
+        probability="0.02"/>
+
+    <flow
+        id="night_southWest"
+        type="car"
+        route="southWest"
+        begin="0"
+        end="100"
+        probability="0.02"/>
+
+    <flow
+        id="night_eastWest"
+        type="car"
+        route="eastWest"
+        begin="0"
+        end="100"
+        probability="0.1"/>
+
+    <flow
+        id="night_eastNorth"
+        type="car"
+        route="eastNorth"
+        begin="0"
+        end="100"
+        probability="0.03"/>
+
+    <flow
+        id="night_eastSouth"
+        type="car"
+        route="eastSouth"
+        begin="0"
+        end="100"
+        probability="0.02"/>
+
+    <flow
+        id="night_westEast"
+        type="car"
+        route="westEast"
+        begin="0"
+        end="100"
+        probability="0.08"/>
+
+    <flow
+        id="night_westNorth"
+        type="car"
+        route="westNorth"
+        begin="0"
+        end="100"
+        probability="0.02"/>
+
+    <flow
+        id="night_westSouth"
+        type="car"
+        route="westSouth"
+        begin="0"
+        end="100"
+        probability="0.02"/>
+
+    <flow
+        id="morning_northSouth"
+        type="car"
+        route="northSouth"
+        begin="100"
+        end="200"
+        probability="0.4"/>
+
+    <flow
+        id="morning_northEast"
+        type="car"
+        route="northEast"
+        begin="100"
+        end="200"
+        probability="0.15"/>
+
+    <flow
+        id="morning_northWest"
+        type="car"
+        route="northWest"
+        begin="100"
+        end="200"
+        probability="0.05"/>
+
+    <flow
+        id="morning_southNorth"
+        type="car"
+        route="southNorth"
+        begin="100"
+        end="200"
+        probability="0.12"/>
+
+    <flow
+        id="morning_southEast"
+        type="car"
+        route="southEast"
+        begin="100"
+        end="200"
+        probability="0.04"/>
+
+    <flow
+        id="morning_southWest"
+        type="car"
+        route="southWest"
+        begin="100"
+        end="200"
+        probability="0.04"/>
+
+    <flow
+        id="morning_eastWest"
+        type="car"
+        route="eastWest"
+        begin="100"
+        end="200"
+        probability="0.12"/>
+
+    <flow
+        id="morning_eastNorth"
+        type="car"
+        route="eastNorth"
+        begin="100"
+        end="200"
+        probability="0.05"/>
+
+    <flow
+        id="morning_eastSouth"
+        type="car"
+        route="eastSouth"
+        begin="100"
+        end="200"
+        probability="0.03"/>
+
+    <flow
+        id="morning_westEast"
+        type="car"
+        route="westEast"
+        begin="100"
+        end="200"
+        probability="0.1"/>
+
+    <flow
+        id="morning_westNorth"
+        type="car"
+        route="westNorth"
+        begin="100"
+        end="200"
+        probability="0.04"/>
+
+    <flow
+        id="morning_westSouth"
+        type="car"
+        route="westSouth"
+        begin="100"
+        end="200"
+        probability="0.03"/>
+
+    <flow
+        id="rush_northSouth"
+        type="car"
+        route="northSouth"
+        begin="200"
+        end="350"
+        probability="0.7"/>
+
+    <flow
+        id="rush_northEast"
+        type="car"
+        route="northEast"
+        begin="200"
+        end="350"
+        probability="0.2"/>
+
+    <flow
+        id="rush_northWest"
+        type="car"
+        route="northWest"
+        begin="200"
+        end="350"
+        probability="0.1"/>
+
+    <flow
+        id="rush_southNorth"
+        type="car"
+        route="southNorth"
+        begin="200"
+        end="350"
+        probability="0.25"/>
+
+    <flow
+        id="rush_southEast"
+        type="car"
+        route="southEast"
+        begin="200"
+        end="350"
+        probability="0.08"/>
+
+    <flow
+        id="rush_southWest"
+        type="car"
+        route="southWest"
+        begin="200"
+        end="350"
+        probability="0.07"/>
+
+    <flow
+        id="rush_eastWest"
+        type="car"
+        route="eastWest"
+        begin="200"
+        end="350"
+        probability="0.2"/>
+
+    <flow
+        id="rush_eastNorth"
+        type="car"
+        route="eastNorth"
+        begin="200"
+        end="350"
+        probability="0.08"/>
+
+    <flow
+        id="rush_eastSouth"
+        type="car"
+        route="eastSouth"
+        begin="200"
+        end="350"
+        probability="0.07"/>
+
+    <flow
+        id="rush_westEast"
+        type="car"
+        route="westEast"
+        begin="200"
+        end="350"
+        probability="0.18"/>
+
+    <flow
+        id="rush_westNorth"
+        type="car"
+        route="westNorth"
+        begin="200"
+        end="350"
+        probability="0.06"/>
+
+    <flow
+        id="rush_westSouth"
+        type="car"
+        route="westSouth"
+        begin="200"
+        end="350"
+        probability="0.06"/>
+
+    <flow
+        id="evening_northSouth"
+        type="car"
+        route="northSouth"
+        begin="350"
+        end="450"
+        probability="0.2"/>
+
+    <flow
+        id="evening_northEast"
+        type="car"
+        route="northEast"
+        begin="350"
+        end="450"
+        probability="0.05"/>
+
+    <flow
+        id="evening_northWest"
+        type="car"
+        route="northWest"
+        begin="350"
+        end="450"
+        probability="0.05"/>
+
+    <flow
+        id="evening_southNorth"
+        type="car"
+        route="southNorth"
+        begin="350"
+        end="450"
+        probability="0.2"/>
+
+    <flow
+        id="evening_southEast"
+        type="car"
+        route="southEast"
+        begin="350"
+        end="450"
+        probability="0.05"/>
+
+    <flow
+        id="evening_southWest"
+        type="car"
+        route="southWest"
+        begin="350"
+        end="450"
+        probability="0.05"/>
+
+    <flow
+        id="evening_eastWest"
+        type="car"
+        route="eastWest"
+        begin="350"
+        end="450"
+        probability="0.5"/>
+
+    <flow
+        id="evening_eastNorth"
+        type="car"
+        route="eastNorth"
+        begin="350"
+        end="450"
+        probability="0.1"/>
+
+    <flow
+        id="evening_eastSouth"
+        type="car"
+        route="eastSouth"
+        begin="350"
+        end="450"
+        probability="0.1"/>
+
+    <flow
+        id="evening_westEast"
+        type="car"
+        route="westEast"
+        begin="350"
+        end="450"
+        probability="0.6"/>
+
+    <flow
+        id="evening_westNorth"
+        type="car"
+        route="westNorth"
+        begin="350"
+        end="450"
+        probability="0.1"/>
+
+    <flow
+        id="evening_westSouth"
+        type="car"
+        route="westSouth"
+        begin="350"
+        end="450"
+        probability="0.1"/>
+
+    <flow
+        id="night2_northSouth"
+        type="car"
+        route="northSouth"
+        begin="450"
+        end="500"
+        probability="0.1"/>
+
+    <flow
+        id="night2_northEast"
+        type="car"
+        route="northEast"
+        begin="450"
+        end="500"
+        probability="0.03"/>
+
+    <flow
+        id="night2_northWest"
+        type="car"
+        route="northWest"
+        begin="450"
+        end="500"
+        probability="0.02"/>
+
+    <flow
+        id="night2_southNorth"
+        type="car"
+        route="southNorth"
+        begin="450"
+        end="500"
+        probability="0.08"/>
+
+    <flow
+        id="night2_southEast"
+        type="car"
+        route="southEast"
+        begin="450"
+        end="500"
+        probability="0.02"/>
+
+    <flow
+        id="night2_southWest"
+        type="car"
+        route="southWest"
+        begin="450"
+        end="500"
+        probability="0.02"/>
+
+    <flow
+        id="night2_eastWest"
+        type="car"
+        route="eastWest"
+        begin="450"
+        end="500"
+        probability="0.1"/>
+
+    <flow
+        id="night2_eastNorth"
+        type="car"
+        route="eastNorth"
+        begin="450"
+        end="500"
+        probability="0.03"/>
+
+    <flow
+        id="night2_eastSouth"
+        type="car"
+        route="eastSouth"
+        begin="450"
+        end="500"
+        probability="0.02"/>
+
+    <flow
+        id="night2_westEast"
+        type="car"
+        route="westEast"
+        begin="450"
+        end="500"
+        probability="0.08"/>
+
+    <flow
+        id="night2_westNorth"
+        type="car"
+        route="westNorth"
+        begin="450"
+        end="500"
+        probability="0.02"/>
+
+    <flow
+        id="night2_westSouth"
+        type="car"
+        route="westSouth"
+        begin="450"
+        end="500"
+        probability="0.02"/>
+
+</routes>

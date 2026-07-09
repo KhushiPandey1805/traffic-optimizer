@@ -1,6 +1,6 @@
 import traci
 
-sumoCmd = ["sumo-gui", "-c", "config.sumocfg"]
+sumoCmd = ["sumo-gui", "-c", "../config.sumocfg"]
 
 traci.start(sumoCmd)
 

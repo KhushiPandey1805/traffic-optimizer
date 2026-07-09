@@ -3,7 +3,7 @@ import pandas as pd
 
 from metrics import collect_metrics
 
-sumoCmd=["sumo-gui","-c","config.sumocfg"]
+sumoCmd=["sumo-gui","-c","../config.sumocfg"]
 
 traci.start(sumoCmd)
 

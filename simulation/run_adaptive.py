@@ -3,7 +3,7 @@ import pandas as pd
 
 from metrics import collect_metrics
 
-sumoCmd = ["sumo-gui", "-c", "config.sumocfg"]
+sumoCmd = ["sumo-gui", "-c", "../config.sumocfg"]
 
 traci.start(sumoCmd)
 
@@ -19,16 +19,13 @@ for step in range(500):
 
     traci.simulationStep()
 
-    # Queue lengths
-    ns = (
-        traci.edge.getLastStepHaltingNumber("n2c")
-        + traci.edge.getLastStepHaltingNumber("s2c")
-    )
+    north = traci.edge.getWaitingTime("n2c")
+    south = traci.edge.getWaitingTime("s2c")
+    east  = traci.edge.getWaitingTime("e2c")
+    west  = traci.edge.getWaitingTime("w2c")
 
-    ew = (
-        traci.edge.getLastStepHaltingNumber("e2c")
-        + traci.edge.getLastStepHaltingNumber("w2c")
-    )
+    ns = north + south
+    ew = east + west
 
     # Wait at least min_green steps before changing
     if step - last_switch >= min_green:
