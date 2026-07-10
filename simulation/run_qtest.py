@@ -6,27 +6,24 @@ Q = np.load("../results/qtable.npy")
 
 def get_state():
 
-    north = min(
-        traci.edge.getLastStepHaltingNumber("n2c") // 2,
-        10
+    ns = (
+        traci.edge.getLastStepHaltingNumber("n2c")
+        +
+        traci.edge.getLastStepHaltingNumber("s2c")
     )
 
-    south = min(
-        traci.edge.getLastStepHaltingNumber("s2c") // 2,
-        10
+    ew = (
+        traci.edge.getLastStepHaltingNumber("e2c")
+        +
+        traci.edge.getLastStepHaltingNumber("w2c")
     )
 
-    east = min(
-        traci.edge.getLastStepHaltingNumber("e2c") // 2,
-        10
-    )
+    ns = min(ns // 2, 10)
+    ew = min(ew // 2, 10)
 
-    west = min(
-        traci.edge.getLastStepHaltingNumber("w2c") // 2,
-        10
-    )
+    phase = 0 if current_phase == 0 else 1
 
-    return north, south, east, west
+    return ns, ew, phase
 
 
 traci.start([
@@ -53,8 +50,7 @@ for step in range(500):
         Q[
             state[0],
             state[1],
-            state[2],
-            state[3]
+            state[2]
         ]
     )
 

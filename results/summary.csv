@@ -2,4 +2,4 @@ Method,Average Wait,Maximum Wait
 Fixed,195.938,536.0
 Adaptive,71.302,169.0
 Dynamic,217.388,791.0
-Q-learning,88.93,1027.0
+Q-learning,37.738,183.0
