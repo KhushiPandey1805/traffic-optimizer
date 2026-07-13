@@ -50,25 +50,79 @@ def choose_action(state):
 
     return torch.argmax(q_values).item()
 
-def train_step(state, action, reward, next_state):
+def train_step():
 
-    state_tensor = state_to_tensor(state)
-    next_tensor = state_to_tensor(next_state)
+    if len(memory) < batch_size:
+        return
 
-    prediction = model(state_tensor)[action]
+    batch = random.sample(memory, batch_size)
 
-    with torch.no_grad():
-        target = reward + gamma * torch.max(model(next_tensor))
+    states = []
+    targets = []
 
-    loss = criterion(prediction, target)
+    for state, action, reward, next_state in batch:
+
+        state_tensor = state_to_tensor(state)
+        next_tensor = state_to_tensor(next_state)
+
+        with torch.no_grad():
+            target = model(state_tensor).clone()
+
+            target[action] = (
+                reward +
+                gamma * torch.max(model(next_tensor))
+            )
+
+        states.append(state_tensor)
+        targets.append(target)
+
+    states = torch.stack(states)
+    targets = torch.stack(targets)
+
+    predictions = model(states)
+
+    loss = criterion(predictions, targets)
 
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
 
+def get_state():
+
+    ns = (
+        traci.edge.getLastStepHaltingNumber("n2c")
+        +
+        traci.edge.getLastStepHaltingNumber("s2c")
+    )
+
+    ew = (
+        traci.edge.getLastStepHaltingNumber("e2c")
+        +
+        traci.edge.getLastStepHaltingNumber("w2c")
+    )
+
+    ns = min(ns // 2, 10)
+    ew = min(ew // 2, 10)
+
+    phase = current_phase // 2
+
+    return (ns, ew, phase)
+
+def get_reward():
+
+    north = traci.edge.getWaitingTime("n2c")
+    south = traci.edge.getWaitingTime("s2c")
+    east  = traci.edge.getWaitingTime("e2c")
+    west  = traci.edge.getWaitingTime("w2c")
+
+    return -(
+        north +
+        south +
+        east +
+        west
+    )
+
 model = DQN()
-
-
 
 optimizer = optim.Adam(
     model.parameters(),
@@ -95,6 +149,8 @@ sumoCmd = [
     "../config.sumocfg"
 ]
 
+min_green = 10
+
 for episode in range(200):
 
     traci.start(sumoCmd)
@@ -102,6 +158,9 @@ for episode in range(200):
     tls = traci.trafficlight.getIDList()[0]
 
     current_phase = 0
+    last_switch = 0
+
+    traci.simulationStep()
 
     state = get_state()
 
@@ -109,7 +168,47 @@ for episode in range(200):
 
     for step in range(500):
 
-        pass
+        action = choose_action(state)
+
+        if step - last_switch >= min_green:
+
+            if action == 0 and current_phase != 0:
+
+                traci.trafficlight.setPhase(tls, 0)
+
+                current_phase = 0
+                last_switch = step
+
+            elif action == 1 and current_phase != 2:
+
+                traci.trafficlight.setPhase(tls, 2)
+
+                current_phase = 2
+                last_switch = step
+
+        traci.simulationStep()
+
+        reward = get_reward()
+
+        next_state = get_state()
+
+        total_reward += reward
+
+        memory.append(
+
+            (
+                state,
+                action,
+                reward,
+                next_state
+            )
+
+        )
+
+        if step%4==0:
+            train_step()
+
+        state = next_state
 
     traci.close()
 
@@ -119,5 +218,14 @@ for episode in range(200):
     )
 
     print(
-        f"Episode {episode}, epsilon={epsilon:.3f}"
+        f"Episode {episode:3d}"
+        f" | Reward = {total_reward:.2f}"
+        f" | Epsilon = {epsilon:.3f}"
     )
+
+torch.save(
+    model.state_dict(),
+    "../results/dqn_model.pth"
+)
+
+print("Model saved.")
