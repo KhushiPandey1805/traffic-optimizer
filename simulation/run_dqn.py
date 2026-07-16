@@ -1,6 +1,7 @@
 import traci
 import random
 import numpy as np
+import pandas as pd
 
 import torch
 import torch.nn as nn
@@ -70,7 +71,7 @@ def train_step():
 
             target[action] = (
                 reward +
-                gamma * torch.max(model(next_tensor))
+                gamma * torch.max(target_model(next_tensor))
             )
 
         states.append(state_tensor)
@@ -124,6 +125,14 @@ def get_reward():
 
 model = DQN()
 
+target_model=DQN()
+
+target_model.load_state_dict(model.state_dict())
+
+target_model.eval()
+
+training_log=[]
+
 optimizer = optim.Adam(
     model.parameters(),
     lr=0.001
@@ -151,7 +160,13 @@ sumoCmd = [
 
 min_green = 10
 
+best_reward=float("-inf")
+
 for episode in range(200):
+
+    if (episode+1)%10==0:
+        target_model.load_state_dict(model.state_dict())
+        print("Target network updated.")
 
     traci.start(sumoCmd)
 
@@ -205,7 +220,7 @@ for episode in range(200):
 
         )
 
-        if step%4==0:
+        if step % 4 == 0:
             train_step()
 
         state = next_state
@@ -222,6 +237,22 @@ for episode in range(200):
         f" | Reward = {total_reward:.2f}"
         f" | Epsilon = {epsilon:.3f}"
     )
+
+    training_log.append({
+        "episode":episode,
+        "reward":total_reward,
+        "epsilon":epsilon
+    })
+
+    if total_reward>best_reward:
+        best_reward=total_reward
+        torch.save(model.state_dict(), "../results/best_dqn.pth")
+        print(f"New best model! Reward={best_reward:.2f}")
+
+pd.DataFrame(training_log).to_csv(
+    "../results/dqn_training_log.csv",
+    index=False
+)
 
 torch.save(
     model.state_dict(),
