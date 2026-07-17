@@ -1,9 +1,21 @@
 import traci
 import pandas as pd
+import sys
 
 from metrics import collect_metrics
 
-sumoCmd=["sumo-gui","-c","../config.sumocfg"]
+seed=0
+
+if len(sys.argv)>1:
+    seed=int(sys.argv[1])
+
+sumoCmd = [
+    "sumo",
+    "-c",
+    "../config.sumocfg",
+    "--seed",
+    str(seed)
+]
 
 traci.start(sumoCmd)
 
@@ -44,7 +56,7 @@ df=pd.DataFrame(
 )
 
 df.to_csv(
-    "../results/fixed.csv",
+    f"../results/fixed_seed{seed}.csv",
     index=False
 )
 

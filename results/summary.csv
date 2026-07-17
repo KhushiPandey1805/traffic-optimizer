@@ -1,6 +1,6 @@
-Method,Average Wait,Maximum Wait
-Fixed,195.938,536.0
-Adaptive,71.302,169.0
-Dynamic,217.388,791.0
-Q-learning,37.738,183.0
-DQN,32.774,75.0
+Controller,Mean Wait,Std Wait,Mean Max Wait,Std Max Wait
+fixed,189.61,10.13,577.0,58.79
+adaptive,65.54,4.46,160.0,18.81
+dynamic,185.8,21.02,709.7,75.43
+qlearning,33.12,2.44,108.2,34.76
+dqn,32.31,2.97,111.8,56.24

@@ -2,6 +2,7 @@ import traci
 import torch
 import torch.nn as nn
 import pandas as pd
+import sys
 
 class DQN(nn.Module):
 
@@ -74,10 +75,17 @@ def choose_action(state):
 
     return torch.argmax(q_values).item()
 
+seed=0
+
+if len(sys.argv)>1:
+    seed=int(sys.argv[1])
+
 sumoCmd = [
-    "sumo-gui",
+    "sumo",
     "-c",
-    "../config.sumocfg"
+    "../config.sumocfg",
+    "--seed",
+    str(seed)
 ]
 
 traci.start(sumoCmd)
@@ -140,7 +148,7 @@ df = pd.DataFrame(
 )
 
 df.to_csv(
-    "../results/dqn.csv",
+    f"../results/dqn_seed{seed}.csv",
     index=False
 )
 

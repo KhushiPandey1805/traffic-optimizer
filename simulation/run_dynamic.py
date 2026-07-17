@@ -1,7 +1,19 @@
 import traci
 import pandas as pd
+import sys
 
-sumoCmd=["sumo-gui","-c","../config.sumocfg"]
+seed=0
+
+if len(sys.argv)>1:
+    seed=int(sys.argv[1])
+
+sumoCmd = [
+    "sumo",
+    "-c",
+    "../config.sumocfg",
+    "--seed",
+    str(seed)
+]
 
 traci.start(sumoCmd)
 
@@ -76,6 +88,6 @@ df = pd.DataFrame(
 )
 
 df.to_csv(
-    "../results/dynamic.csv",
+    f"../results/dynamic_seed{seed}.csv",
     index=False
 )

@@ -1,6 +1,7 @@
 import traci
 import numpy as np
 import pandas as pd
+import sys
 
 Q = np.load("../results/qtable.npy")
 
@@ -26,11 +27,20 @@ def get_state():
     return ns, ew, phase
 
 
-traci.start([
-    "sumo-gui",
+seed=0
+
+if len(sys.argv)>1:
+    seed=int(sys.argv[1])
+
+sumoCmd = [
+    "sumo",
     "-c",
-    "../config.sumocfg"
-])
+    "../config.sumocfg",
+    "--seed",
+    str(seed)
+]
+
+traci.start(sumoCmd)
 
 tls=traci.trafficlight.getIDList()[0]
 
@@ -109,7 +119,7 @@ df=pd.DataFrame(
 )
 
 df.to_csv(
-    "../results/qlearning.csv",
+    f"../results/qlearning_seed{seed}.csv",
     index=False
 )
 
